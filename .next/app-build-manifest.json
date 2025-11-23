@@ -16,10 +16,15 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/(public)/abstrak/page": [
+    "/(public)/search/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(public)/abstrak/page.js"
+      "static/chunks/app/(public)/search/page.js"
+    ],
+    "/(public)/topik/[slug]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(public)/topik/[slug]/page.js"
     ]
   }
 }

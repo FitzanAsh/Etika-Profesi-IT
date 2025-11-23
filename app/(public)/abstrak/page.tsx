@@ -3,6 +3,10 @@ import { MarkdownViewer } from '@/components/ui/markdown-viewer';
 
 const SLUG = 'abstrak';
 
+// Force dynamic rendering to always fetch fresh data
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function Page() {
   const data = await getPublicContent(SLUG);
 

@@ -1,4 +1,6 @@
 {
+  "/api/search/route": "app/api/search/route.js",
   "/(public)/page": "app/(public)/page.js",
-  "/(public)/abstrak/page": "app/(public)/abstrak/page.js"
+  "/(public)/topik/[slug]/page": "app/(public)/topik/[slug]/page.js",
+  "/(public)/search/page": "app/(public)/search/page.js"
 }

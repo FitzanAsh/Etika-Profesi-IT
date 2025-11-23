@@ -4,6 +4,10 @@ import { ChapterPagination } from '@/components/layout/chapter-pagination';
 
 const SLUG = 'pembahasan';
 
+// Force dynamic rendering to always fetch fresh data
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function Page() {
   const data = await getPublicContent(SLUG);
 
