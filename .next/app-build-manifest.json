@@ -16,15 +16,10 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/(public)/submit-case/page": [
+    "/(public)/abstrak/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(public)/submit-case/page.js"
-    ],
-    "/(public)/cases/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(public)/cases/page.js"
+      "static/chunks/app/(public)/abstrak/page.js"
     ]
   }
 }
