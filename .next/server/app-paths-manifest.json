@@ -1,0 +1,5 @@
+{
+  "/(public)/submit-case/page": "app/(public)/submit-case/page.js",
+  "/(public)/cases/page": "app/(public)/cases/page.js",
+  "/(public)/page": "app/(public)/page.js"
+}

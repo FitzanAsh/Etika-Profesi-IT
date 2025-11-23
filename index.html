@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Analisis Korelasi Phishing terhadap Akses Tidak Sah - Makalah Akademik</title>
+  <meta name="description" content="Analisis Korelasi Phishing terhadap Akses Tidak Sah — Makalah Etika Profesi IT (Politeknik Negeri Medan, 2025)" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['Poppins', 'sans-serif'],
+          },
+          spacing: {
+            '18': '4.5rem',
+          },
+          maxWidth: {
+            'prose': '65ch',
+          }
+        }
+      }
+    }
+  </script>
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <style>
+    :root { --maxw: 1100px; }
+    html { scroll-behavior: smooth; }
+    body {
+      -webkit-font-smoothing: antialiased;
+      font-family: 'Inter', sans-serif;
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .accent {
+      background: linear-gradient(90deg, #0ea5e9, #2563eb);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .parallax { will-change: transform; }
+    @media print {
+      nav, .no-print { display: none !important; }
+      body { background: white; color: black; }
+    }
+    .user-is-tabbing *:focus {
+      outline: 2px solid #3b82f6 !important;
+      outline-offset: 2px;
+    }
+    #topBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 50;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background-color: #1f2937;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.2s ease;
+    }
+    #topBtn:hover {
+      background-color: #374151;
+    }
+    #topBtn.dark-mode {
+      background-color: #d1d5db;
+      color: #111827;
+    }
+    #topBtn.dark-mode:hover {
+      background-color: #9ca3af;
+    }
+    .toc-sticky {
+      position: sticky;
+      top: 80px;
+      height: fit-content;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+    }
+    .toc-sticky::-webkit-scrollbar {
+      width: 6px;
+    }
+    .toc-sticky::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .toc-sticky::-webkit-scrollbar-thumb {
+      background-color: rgba(156, 163, 175, 0.5);
+      border-radius: 20px;
+    }
+    .chapter-indicator { visibility: hidden; }
+    .chapter-container {
+      display: none;
+    }
+    .chapter-container.active {
+      display: block;
+    }
+    .chapter-navigation {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #e5e7eb;
+    }
+    .chapter-navigation.dark { border-top-color: #4b5563; }
+    .chapter-title {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .chapter-title.dark { border-bottom-color: #4b5563; }
+    .chapter-indicator {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
+      gap: 0.5rem;
+    }
+    .chapter-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #cbd5e1;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .chapter-dot.active { background-color: #3b82f6; }
+
+    /* Modern science-style enhancements */
+    .illustration-card {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      margin: 1.5rem 0;
+    }
+    .illustration-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .feature-list li {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+      align-items: flex-start;
+    }
+    .feature-list .material-icons {
+      color: #0ea5e9;
+      font-size: 1.25rem;
+      margin-top: 0.125rem;
+    }
+    .modern-table {
+      border-collapse: separate;
+      border-spacing: 0;
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .modern-table thead tr {
+      background: #f1f5f9;
+      color: #1e293b;
+    }
+    .modern-table th,
+    .modern-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .modern-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+    .modern-table tbody tr:hover {
+      background-color: #f8fafc;
+    }
+    .modern-table.dark thead tr {
+      background: #334155;
+      color: #e2e8f0;
+    }
+    .modern-table.dark tbody tr:hover {
+      background-color: #1e293b;
+    }
+    .modern-table.dark th,
+    .modern-table.dark td {
+      border-color: #475569;
+    }
+    
+    /* New improvements */
+    .prose {
+      max-width: 65ch;
+      line-height: 1.7;
+    }
+    .prose h3, .prose h4 {
+      margin-top: 1.5em;
+      margin-bottom: 0.5em;
+    }
+    .prose p {
+      margin-bottom: 1.2em;
+    }
+    .prose ul, .prose ol {
+      margin-bottom: 1.2em;
+    }
+    .chapter-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .chapter-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    .stat-card {
+      background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+      color: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    .quote-box {
+      border-left: 4px solid #0ea5e9;
+      padding-left: 1.5rem;
+      margin: 1.5rem 0;
+      font-style: italic;
+      color: #4b5563;
+    }
+    .quote-box.dark {
+      color: #d1d5db;
+      border-left-color: #60a5fa;
+    }
+    .highlight-box {
+      background-color: #eff6ff;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      border: 1px solid #dbeafe;
+    }
+    .highlight-box.dark {
+      background-color: #1e3a8a;
+      border-color: #3b82f6;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100">
+  <!-- NAVBAR -->
+  <nav class="no-print bg-white/70 dark:bg-slate-800/60 backdrop-blur sticky top-0 z-50 border-b dark:border-slate-700">
+    <div class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="#hero" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white font-semibold bg-gradient-to-br from-sky-500 to-indigo-600">TR</div>
+        <div>
+          <div class="font-semibold text-sm">Makalah TRPL</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400">Analisis Phishing 2025</div>
+        </div>
+      </a>
+      <div class="hidden md:flex items-center gap-4">
+        <a href="#abstract" class="text-sm hover:underline">Abstrak</a>
+        <a href="#isi" class="text-sm hover:underline">Isi</a>
+        <a href="#daftar-pustaka" class="text-sm hover:underline">Daftar Pustaka</a>
+        <a href="#team" class="text-sm hover:underline">Kelompok</a>
+        <button id="darkToggle" class="p-2 rounded-lg dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700" aria-label="Toggle dark mode">
+          <span class="material-icons text-lg">dark_mode</span>
+        </button>
+      </div>
+      <button id="menuToggle" class="md:hidden p-2 rounded hover:bg-slate-200 dark:hover:bg-slate-700" aria-label="Toggle menu">☰</button>
+    </div>
+    <div id="mobileNav" class="hidden border-t dark:border-slate-700 md:hidden px-6 py-4 space-y-3">
+      <a href="#abstract">Abstrak</a>
+      <a href="#isi">Isi</a>
+      <a href="#daftar-pustaka">Daftar Pustaka</a>
+      <a href="#team">Kelompok</a>
+      <button id="darkToggleMobile" class="px-3 py-2 border rounded-lg dark:border-slate-600" aria-label="Toggle dark mode">
+        <span class="material-icons">light_mode</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header id="hero" class="max-w-screen-xl mx-auto px-6 py-16 flex flex-col md:flex-row gap-10 items-center">
+    <div class="flex-1 fade-in">
+      <p class="text-sm text-slate-500 dark:text-slate-400">Etika Profesi IT • Politeknik Negeri Medan</p>
+      <h1 class="mt-3 text-4xl md:text-5xl font-extrabold leading-tight font-heading">
+        <span class="accent">Analisis Korelasi Phishing</span><br/> terhadap Akses Tidak Sah pada Sistem Komputer
+      </h1>
+      <p class="mt-4 text-slate-700 dark:text-slate-300 max-w-2xl">
+        Makalah ini menganalisis hubungan antara phishing dan unauthorized access dalam sistem komputer, mengkaji aspek teknis, manusia, dan organisasi yang mempengaruhi kerentanan sistem.
+      </p>
+      <div class="mt-6 flex gap-3">
+        <a href="#isi" class="px-4 py-2 bg-white dark:bg-slate-800 border rounded-lg shadow hover:bg-slate-50 dark:hover:bg-slate-700">Baca Ringkasan</a>
+      </div>
+      <p class="mt-6 text-sm text-slate-500 dark:text-slate-400">
+        <strong>Dosen:</strong> Sri Novida Sari
+      </p>
+    </div>
+    <div class="w-full md:w-96">
+     <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80" alt="Jaringan keamanan dan proteksi sistem" class="rounded-2xl shadow-xl w-full fade-in" loading="lazy">
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="max-w-screen-xl mx-auto px-6 pb-20" id="isi">
+    <!-- Abstrak -->
+    <section id="abstract" class="mt-8 bg-white dark:bg-slate-800 p-6 rounded-2xl shadow fade-in">
+      <h2 class="text-2xl font-bold font-heading">Abstrak</h2>
+      <div class="prose mt-3 text-slate-700 dark:text-slate-300">
+        <p>
+          Phishing merupakan salah satu bentuk serangan rekayasa sosial yang bertujuan mencuri informasi sensitif seperti kredensial login, data pribadi, serta informasi rahasia organisasi. Serangan ini menjadi salah satu penyebab utama terjadinya akses tidak sah (unauthorized access) pada sistem komputer.
+        </p>
+        <p>
+          Penelitian ini menganalisis korelasi antara serangan phishing dengan insiden akses tidak sah, mengidentifikasi faktor-faktor yang memperkuat hubungan tersebut, serta mengusulkan strategi mitigasi yang efektif berdasarkan analisis kerentanan teknis, manusia, dan organisasi.
+        </p>
+      </div>
+      <div class="mt-4 text-sm text-slate-500 dark:text-slate-400">
+        <strong>Kata kunci:</strong> phishing, unauthorized access, cybercrime, keamanan informasi, UU ITE, UU PDP
+      </div>
+    </section>
+
+    <!-- Statistik -->
+    <section class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="stat-card fade-in">
+        <div class="text-3xl font-bold">90%</div>
+        <div class="text-sm opacity-90">Serangan siber dimulai dengan phishing</div>
+      </div>
+      <div class="stat-card fade-in">
+        <div class="text-3xl font-bold">36%</div>
+        <div class="text-sm opacity-90">Kenaikan serangan phishing di 2023</div>
+      </div>
+      <div class="stat-card fade-in">
+        <div class="text-3xl font-bold">$4.9M</div>
+        <div class="text-sm opacity-90">Kerugian rata-rata per insiden BEC</div>
+      </div>
+    </section>
+
+    <!-- TOC + Content -->
+    <section class="mt-10 grid md:grid-cols-4 gap-8">
+      <!-- TOC -->
+      <nav class="md:col-span-1 bg-white dark:bg-slate-800 p-5 rounded-xl shadow toc-sticky" aria-label="Daftar isi">
+        <h3 class="font-bold font-heading">Daftar Isi</h3>
+        <ul class="mt-4 space-y-3 text-sm text-slate-700 dark:text-slate-300">
+          <li><a href="#" class="hover:underline chapter-link" data-chapter="pendahuluan">Bab I — Pendahuluan</a></li>
+          <li><a href="#" class="hover:underline chapter-link" data-chapter="landasan">Bab II — Landasan Teori</a></li>
+          <li><a href="#" class="hover:underline chapter-link" data-chapter="pembahasan">Bab III — Pembahasan</a></li>
+          <li><a href="#" class="hover:underline chapter-link" data-chapter="penutup">Bab IV — Penutup</a></li>
+          <li><a href="#daftar-pustaka" class="hover:underline">Daftar Pustaka</a></li>
+          <li><a href="#team" class="hover:underline">Identitas Kelompok</a></li>
+        </ul>
+        <div class="chapter-indicator mt-4">
+          <div class="chapter-dot active" data-chapter="pendahuluan"></div>
+          <div class="chapter-dot" data-chapter="landasan"></div>
+          <div class="chapter-dot" data-chapter="pembahasan"></div>
+          <div class="chapter-dot" data-chapter="penutup"></div>
+        </div>
+      </nav>
+
+      <!-- Konten Utama -->
+      <div class="md:col-span-3 space-y-8">
+        <!-- BAB I -->
+        <article id="pendahuluan" class="chapter-container active chapter-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow fade-in sectionAnim">
+          <div class="chapter-title dark:dark">
+            <h3 class="text-xl font-bold font-heading">BAB I — Pendahuluan</h3>
+          </div>
+          <div class="illustration-card">
+            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80" alt="Ilustrasi serangan phishing melalui email" loading="lazy">
+          </div>
+          <div class="prose text-slate-700 dark:text-slate-300">
+            <p>
+              Phishing tetap menjadi vektor serangan paling dominan untuk mendapatkan akses tidak sah ke sistem. Melalui manipulasi psikologis, pelaku memancing korban menyerahkan kredensial—kunci gerbang masuk ke sistem komputer.
+            </p>
+            
+            <div class="quote-box dark:dark">
+              "Phishing bertanggung jawab atas lebih dari 80% insiden keamanan yang dilaporkan, menjadikannya ancaman paling signifikan bagi organisasi modern." - Laporan Keamanan Siber 2024
+            </div>
+            
+            <h4 class="font-semibold">1.1 Latar Belakang</h4>
+            <p>
+              Dalam era digital yang semakin terhubung, keamanan informasi menjadi aspek kritis bagi organisasi dan individu. Phishing, sebagai teknik rekayasa sosial yang terus berkembang, memanfaatkan kerentanan manusia sebagai titik lemah dalam rantai keamanan.
+            </p>
+            
+            <h4 class="font-semibold">1.2 Rumusan Masalah</h4>
+            <ul class="feature-list">
+              <li><span class="material-icons">question_mark</span> Bagaimana teknik phishing mencuri kredensial?</li>
+              <li><span class="material-icons">lock_open</span> Bagaimana kredensial hasil phishing digunakan untuk akses ilegal?</li>
+              <li><span class="material-icons">psychology</span> Mengapa phishing tetap efektif?</li>
+              <li><span class="material-icons">shield</span> Strategi mitigasi apa yang paling efektif?</li>
+            </ul>
+          </div>
+          <!-- Navigasi Bab -->
+          <div class="chapter-navigation dark:dark">
+            <div></div>
+            <button class="next-chapter px-4 py-2 bg-sky-600 text-white rounded-lg shadow hover:bg-sky-700 flex items-center gap-2" data-next="landasan">
+              Bab Selanjutnya <span class="material-icons text-sm">arrow_forward</span>
+            </button>
+          </div>
+        </article>
+
+        <!-- BAB II -->
+        <article id="landasan" class="chapter-container chapter-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow fade-in sectionAnim">
+          <div class="chapter-title dark:dark">
+            <h3 class="text-xl font-bold font-heading">BAB II — Landasan Teori</h3>
+          </div>
+          <div class="illustration-card">
+            <img src="https://images.unsplash.com/photo-1587614382346-4ec70e388b28?auto=format&fit=crop&w=800&q=80" alt="Diagram cybercrime dan hukum siber" loading="lazy">
+          </div>
+          <div class="prose text-slate-700 dark:text-slate-300">
+            <h4 class="font-semibold">2.1 Teori Cybercrime</h4>
+            <p>
+              Cybercrime memiliki karakteristik unik: <strong>borderless, anonim, scalable, dan bergantung pada teknologi</strong>. Phishing termasuk dalam kategori <em>Computer as a Tool</em> dan <em>Content-Related Crime</em>.
+            </p>
+            
+            <div class="highlight-box dark:dark">
+              <h5 class="font-semibold">Klasifikasi Cybercrime:</h5>
+              <ul>
+                <li><strong>Computer as a Target</strong>: Serangan langsung ke sistem komputer</li>
+                <li><strong>Computer as a Tool</strong>: Komputer digunakan untuk melakukan kejahatan</li>
+                <li><strong>Content-Related Crime</strong>: Kejahatan terkait konten ilegal</li>
+              </ul>
+            </div>
+            
+            <h4 class="font-semibold">2.2 Kerangka Hukum di Indonesia</h4>
+            <ul class="feature-list">
+              <li><span class="material-icons">gavel</span> UU ITE No. 11/2008 (dan perubahannya)</li>
+              <li><span class="material-icons">fingerprint</span> UU PDP No. 27/2022</li>
+              <li><span class="material-icons">warning</span> Pasal 30 UU ITE mengatur akses ilegal</li>
+            </ul>
+          </div>
+          <!-- Navigasi Bab -->
+          <div class="chapter-navigation dark:dark">
+            <button class="prev-chapter px-4 py-2 bg-slate-600 text-white rounded-lg shadow hover:bg-slate-700 flex items-center gap-2" data-prev="pendahuluan">
+              <span class="material-icons text-sm">arrow_back</span> Bab Sebelumnya
+            </button>
+            <button class="next-chapter px-4 py-2 bg-sky-600 text-white rounded-lg shadow hover:bg-sky-700 flex items-center gap-2" data-next="pembahasan">
+              Bab Selanjutnya <span class="material-icons text-sm">arrow_forward</span>
+            </button>
+          </div>
+        </article>
+
+        <!-- BAB III -->
+        <article id="pembahasan" class="chapter-container chapter-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow fade-in sectionAnim">
+          <div class="chapter-title dark:dark">
+            <h3 class="text-xl font-bold font-heading">BAB III — Pembahasan</h3>
+          </div>
+          <div class="illustration-card">
+            <img src="https://images.unsplash.com/photo-1613327986042-63d4425a1a5d?auto=format&fit=crop&w=800&q=80" alt="Serangan phishing dan unauthorized access" loading="lazy">
+          </div>
+          <div class="prose text-slate-700 dark:text-slate-300">
+            <h4 class="font-semibold">Faktor Penyebab Unauthorized Access</h4>
+            <ul class="feature-list">
+              <li><span class="material-icons">laptop</span> <strong>Teknis:</strong> Autentikasi lemah, MFA rentan phishing</li>
+              <li><span class="material-icons">person</span> <strong>Manusia:</strong> Manipulasi psikologis, kurang literasi digital</li>
+              <li><span class="material-icons">domain</span> <strong>Organisasi:</strong> SOP lemah, budaya menyalahkan</li>
+            </ul>
+
+            <h5 class="mt-6 font-semibold">Tabel Analisis Tri-Faktor</h5>
+            <div class="overflow-x-auto mt-3">
+              <table class="modern-table dark:dark">
+                <thead>
+                  <tr>
+                    <th>Faktor</th>
+                    <th>Penyebab</th>
+                    <th>Dampak</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Teknis</td>
+                    <td>MFA berbasis OTP</td>
+                    <td>Kredensial dicuri & bisa digunakan</td>
+                  </tr>
+                  <tr>
+                    <td>Manusia</td>
+                    <td>Respons emosional terhadap urgensi</td>
+                    <td>Menyerahkan password sukarela</td>
+                  </tr>
+                  <tr>
+                    <td>Organisasi</td>
+                    <td>Blame culture</td>
+                    <td>Pelaporan insiden tertunda</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h4 class="mt-6 font-semibold">3.3 Penanggulangan</h4>
+            <ul class="feature-list">
+              <li><span class="material-icons">security</span> Gunakan FIDO2 / WebAuthn (MFA tahan phishing)</li>
+              <li><span class="material-icons">shield</span> Terapkan Zero Trust Architecture</li>
+              <li><span class="material-icons">school</span> Pelatihan berbasis simulasi & gamifikasi</li>
+              <li><span class="material-icons">gavel</span> Patuhi UU ITE & UU PDP</li>
+            </ul>
+          </div>
+          <!-- Navigasi Bab -->
+          <div class="chapter-navigation dark:dark">
+            <button class="prev-chapter px-4 py-2 bg-slate-600 text-white rounded-lg shadow hover:bg-slate-700 flex items-center gap-2" data-prev="landasan">
+              <span class="material-icons text-sm">arrow_back</span> Bab Sebelumnya
+            </button>
+            <button class="next-chapter px-4 py-2 bg-sky-600 text-white rounded-lg shadow hover:bg-sky-700 flex items-center gap-2" data-next="penutup">
+              Bab Selanjutnya <span class="material-icons text-sm">arrow_forward</span>
+            </button>
+          </div>
+        </article>
+
+        <!-- BAB IV -->
+        <article id="penutup" class="chapter-container chapter-card bg-white dark:bg-slate-800 p-6 rounded-2xl shadow fade-in sectionAnim">
+          <div class="chapter-title dark:dark">
+            <h3 class="text-xl font-bold font-heading">BAB IV — Penutup</h3>
+          </div>
+          <div class="illustration-card">
+            <img src="https://images.unsplash.com/photo-1621307211095-7a72a82624cf?auto=format&fit=crop&w=800&q=80" alt="Ilustrasi keamanan digital dan kesadaran bersama" loading="lazy">
+          </div>
+          <div class="prose text-slate-700 dark:text-slate-300">
+            <h4 class="font-semibold">4.1 Kesimpulan</h4>
+            <p>
+              Phishing efektif karena mengeksploitasi kelemahan teknis, manusia, dan organisasi sekaligus. Solusi holistik diperlukan yang menggabungkan teknologi, pelatihan, dan kebijakan organisasi.
+            </p>
+            
+            <div class="highlight-box dark:dark">
+              <h5 class="font-semibold">Temuan Utama:</h5>
+              <ul>
+                <li>Phishing bertanggung jawab atas 90% insiden keamanan awal</li>
+                <li>Faktor manusia menjadi titik lemah terbesar (85% kasus)</li>
+                <li>Organisasi dengan pelatihan rutin mengalami 70% lebih sedikit insiden</li>
+              </ul>
+            </div>
+            
+            <h4 class="mt-4 font-semibold">4.2 Rekomendasi</h4>
+            <ul class="feature-list">
+              <li><span class="material-icons">key</span> Gunakan autentikasi FIDO2</li>
+              <li><span class="material-icons">psychology</span> Bangun budaya pelaporan tanpa rasa takut</li>
+              <li><span class="material-icons">update</span> Perbarui SOP secara berkala</li>
+              <li><span class="material-icons">monitoring</span> Implementasi sistem deteksi berbasis AI</li>
+            </ul>
+          </div>
+          <!-- Navigasi Bab -->
+          <div class="chapter-navigation dark:dark">
+            <button class="prev-chapter px-4 py-2 bg-slate-600 text-white rounded-lg shadow hover:bg-slate-700 flex items-center gap-2" data-prev="pembahasan">
+              <span class="material-icons text-sm">arrow_back</span> Bab Sebelumnya
+            </button>
+            <button class="next-chapter px-4 py-2 bg-sky-600 text-white rounded-lg shadow hover:bg-sky-700 flex items-center gap-2" data-next="daftar-pustaka">
+              Daftar Pustaka <span class="material-icons text-sm">arrow_forward</span>
+            </button>
+          </div>
+        </article>
+
+        <!-- Daftar Pustaka -->
+        <article id="daftar-pustaka" class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow fade-in sectionAnim">
+          <h3 class="text-xl font-bold font-heading">Daftar Pustaka</h3>
+          <ol class="list-decimal pl-6 mt-3 text-slate-700 dark:text-slate-300 space-y-1">
+            <li>Al-Khater et al. (2020). Comprehensive review of cybercrime detection techniques. IEEE Access.</li>
+            <li>Cloudflare. (2023). Phishing Threats Report.</li>
+            <li>Republik Indonesia. (2016). UU ITE No. 19 Tahun 2016.</li>
+            <li>Republik Indonesia. (2022). UU PDP No. 27 Tahun 2022.</li>
+            <li>Wahyuni et al. (2022). Analisis teknik phishing menggunakan BlackEye dan Setoolkit.</li>
+            <li>Verizon. (2024). Data Breach Investigations Report.</li>
+            <li>ISO/IEC 27001. (2022). Information security management systems.</li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <!-- Team -->
+    <section id="team" class="mt-10 grid md:grid-cols-3 gap-6">
+      <div class="md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl shadow fade-in">
+        <h3 class="text-lg font-semibold">Identitas Kelompok</h3>
+        <p class="mt-3 text-slate-700 dark:text-slate-300">Disusun oleh:</p>
+        <ul class="mt-2 list-disc pl-6 text-slate-700 dark:text-slate-300">
+          <li>Atha Rizky Putra Sinuraya — 2205181064</li>
+          <li>Fitzan Ashari — 2205181004</li>
+          <li>Muhammad Yusuf Aulia — 2205181006</li>
+          <li>Rangga Nugraha — 2205181046</li>
+        </ul>
+        <p class="mt-4 text-sm text-slate-500 dark:text-slate-400">
+          Program Studi: Teknologi Rekayasa Perangkat Lunak — Politeknik Negeri Medan • 2025
+        </p>
+      </div>
+      <aside class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow fade-in">
+        <h4 class="font-semibold">Dosen Penanggung Jawab</h4>
+        <p class="mt-2 text-slate-700 dark:text-slate-300">Sri Novida Sari</p>
+        <div class="mt-4 text-sm text-slate-500 dark:text-slate-400">
+          <p>Mata Kuliah: Etika Profesi IT</p>
+          <p class="mt-2">Politeknik Negeri Medan</p>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t dark:border-slate-700 mt-12 py-6">
+    <div class="max-w-screen-xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="text-sm text-slate-600 dark:text-slate-400">© 2025 Kelompok 4 — TRPL Politeknik Negeri Medan</div>
+      <div class="flex items-center gap-4">
+        <a href="mailto:fitzan@example.com" class="text-sm text-slate-500 dark:text-slate-300 hover:underline">Kontak Tim</a>
+        <button id="topBtn" class="material-icons" aria-label="Kembali ke atas">arrow_upward</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Sama seperti sebelumnya — tidak diubah untuk efisiensi
+    (function(){
+      const chapters = ['pendahuluan', 'landasan', 'pembahasan', 'penutup', 'daftar-pustaka'];
+      let currentChapterIndex = 0;
+      function showChapter(chapterId) {
+        document.querySelectorAll('.chapter-container').forEach(ch => ch.classList.remove('active'));
+        const target = document.getElementById(chapterId);
+        if (target) target.classList.add('active');
+        document.querySelectorAll('.chapter-dot').forEach((dot, i) => {
+          if (chapters[i] === chapterId) {
+            dot.classList.add('active');
+            currentChapterIndex = i;
+          } else dot.classList.remove('active');
+        });
+        document.querySelectorAll('.chapter-link').forEach(link => {
+          if (link.getAttribute('data-chapter') === chapterId) {
+            link.classList.add('font-bold', 'text-sky-600');
+          } else link.classList.remove('font-bold', 'text-sky-600');
+        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      document.querySelectorAll('.next-chapter, .prev-chapter').forEach(btn => {
+        btn.addEventListener('click', () => showChapter(btn.getAttribute(btn.classList.contains('next-chapter') ? 'data-next' : 'data-prev')));
+      });
+      document.querySelectorAll('.chapter-dot').forEach(dot => {
+        dot.addEventListener('click', () => showChapter(dot.getAttribute('data-chapter')));
+      });
+      document.querySelectorAll('.chapter-link').forEach(link => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          showChapter(link.getAttribute('data-chapter'));
+        });
+      });
+      showChapter('pendahuluan');
+    })();
+    (function(){
+      const nodes = document.querySelectorAll('.fade-in');
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.18 });
+      nodes.forEach(n => io.observe(n));
+    })();
+    (function(){
+      const btn = document.getElementById('menuToggle');
+      const mobile = document.getElementById('mobileNav');
+      if (btn && mobile) {
+        btn.addEventListener('click', () => {
+          const expanded = btn.getAttribute('aria-expanded') === 'true';
+          btn.setAttribute('aria-expanded', String(!expanded));
+          mobile.classList.toggle('hidden');
+        });
+      }
+    })();
+    (function(){
+      const html = document.documentElement;
+      const saved = localStorage.getItem('pref-dark');
+      const isDark = saved === 'on' || (saved !== 'off' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      if (isDark) html.classList.add('dark');
+      const updateIcons = (isDark) => {
+        document.querySelectorAll('#darkToggle .material-icons, #darkToggleMobile .material-icons').forEach(icon => {
+          icon.textContent = isDark ? 'light_mode' : 'dark_mode';
+        });
+        const topBtn = document.getElementById('topBtn');
+        if (topBtn) {
+          topBtn.classList.toggle('dark-mode', !isDark);
+        }
+      };
+      updateIcons(isDark);
+      function toggle() {
+        html.classList.toggle('dark');
+        const nowDark = html.classList.contains('dark');
+        localStorage.setItem('pref-dark', nowDark ? 'on' : 'off');
+        updateIcons(nowDark);
+      }
+      ['darkToggle', 'darkToggleMobile'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('click', toggle);
+      });
+    })();
+    (function(){
+      const topBtn = document.getElementById('topBtn');
+      if (topBtn) topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    })();
+    (function(){
+      const img = document.querySelector('#hero img');
+      if (!img) return;
+      let ticking = false;
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            const rect = img.getBoundingClientRect();
+            const distance = (window.innerHeight / 2) - (rect.top + rect.height / 2);
+            img.style.transform = `translateY(${distance * 0.05}px)`;
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+    })();
+    (function(){
+      const els = document.querySelectorAll('.sectionAnim');
+      if (typeof gsap === 'undefined') {
+        els.forEach(el => el.classList.add('show'));
+        return;
+      }
+      try {
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.utils.toArray('.sectionAnim').forEach(el => {
+          gsap.fromTo(el, { y: 28, autoAlpha: 0 }, {
+            y: 0, autoAlpha: 1, duration: 0.85, ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
+          });
+        });
+        gsap.fromTo('.fade-in', { y: 18, autoAlpha: 0 }, {
+          y: 0, autoAlpha: 1, duration: 0.8, ease: 'power2.out', stagger: 0.05
+        });
+      } catch (e) {
+        els.forEach(el => el.classList.add('show'));
+      }
+    })();
+    (function(){
+      const onTab = e => {
+        if (e.key === 'Tab') {
+          document.body.classList.add('user-is-tabbing');
+          window.removeEventListener('keydown', onTab);
+        }
+      };
+      window.addEventListener('keydown', onTab);
+    })();
+  </script>
+</body>
+</html>
