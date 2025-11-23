@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { Info, ChevronLeft } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 
+export const dynamic = 'force-dynamic';
+
 export default function SubmitCasePage() {
     const searchParams = useSearchParams();
     const from = searchParams.get('from');
