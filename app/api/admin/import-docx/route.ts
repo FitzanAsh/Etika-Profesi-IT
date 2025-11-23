@@ -11,6 +11,14 @@ const supabase = createClient(
 
 export async function GET() {
     try {
+        // Skip auto-import in production
+        if (process.env.NODE_ENV === 'production') {
+            return NextResponse.json({
+                success: false,
+                error: 'Auto-import disabled in production. Use admin panel instead.'
+            });
+        }
+
         console.log('📄 Starting DOCX import...');
 
         // Path to DOCX file
