@@ -1,12 +1,11 @@
 'use client';
+import { Suspense } from 'react';
 import CaseSubmissionForm from '@/components/forms/case-submission-form';
 import Link from 'next/link';
 import { Info, ChevronLeft } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 
-export const dynamic = 'force-dynamic';
-
-export default function SubmitCasePage() {
+function SubmitCaseContent() {
     const searchParams = useSearchParams();
     const from = searchParams.get('from');
 
@@ -73,5 +72,13 @@ export default function SubmitCasePage() {
 
             </div>
         </div>
+    );
+}
+
+export default function SubmitCasePage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+            <SubmitCaseContent />
+        </Suspense>
     );
 }
