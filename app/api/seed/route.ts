@@ -21,37 +21,35 @@ Hasil analisis menunjukkan bahwa unauthorized access terjadi akibat kegagalan si
                 title: 'BAB I - Pendahuluan',
                 slug: 'pendahuluan',
                 source: 'database',
-                body: `## BAB I - PENDAHULUAN
+                body: `## PENDAHULUAN
 
-### 1.1 Latar Belakang
+### Latar Belakang
 
 Dalam era digital yang semakin terhubung, keamanan informasi menjadi aspek kritis bagi organisasi dan individu. Phishing, sebagai teknik rekayasa sosial yang terus berkembang, memanfaatkan kerentanan manusia sebagai titik lemah dalam rantai keamanan.
 
 Phishing tetap menjadi vektor serangan paling dominan untuk mendapatkan akses tidak sah ke sistem. Melalui manipulasi psikologis, pelaku memancing korban menyerahkan kredensial—kunci gerbang masuk ke sistem komputer.
 
-### 1.2 Rumusan Masalah
+### Rumusan Masalah
 
 1. Bagaimana teknik phishing mencuri kredensial?
 2. Bagaimana kredensial hasil phishing digunakan untuk akses ilegal?
 3. Mengapa phishing tetap efektif?
 4. Strategi mitigasi apa yang paling efektif?
 
-### 1.3 Tujuan Penelitian
+### Tujuan Penelitian
 
 Penelitian ini bertujuan untuk menganalisis hubungan antara serangan phishing dengan insiden unauthorized access, mengidentifikasi faktor-faktor yang memperkuat korelasi tersebut, serta mengusulkan strategi mitigasi yang efektif.`
             },
-            { title: 'BAB II - Landasan Teori', slug: 'landasan-teori', source: 'database', body: '# BAB II Landasan Teori\n\n(Teori tentang Phishing...)' },
+            { title: 'BAB II - Landasan Teori', slug: 'landasan-teori', source: 'database', body: '# Landasan Teori\n\n(Teori tentang Phishing...)' },
             {
                 title: 'BAB III - Pembahasan',
                 slug: 'pembahasan',
                 source: 'database',
-                body: `## BAB III - PEMBAHASAN
-
-### 3.1 Analisis Korelasi Phishing dan Unauthorized Access
+                body: `### Analisis Korelasi Phishing dan Unauthorized Access
 
 Phishing merupakan teknik rekayasa sosial yang memanfaatkan manipulasi psikologis untuk mencuri kredensial autentikasi. Kredensial yang berhasil dicuri kemudian digunakan untuk melakukan akses tidak sah (unauthorized access) ke sistem target.
 
-### 3.2 Faktor Penyebab Keberhasilan Serangan
+### Faktor Penyebab Keberhasilan Serangan
 
 **Faktor Teknis:**
 - Autentikasi berbasis password yang lemah
@@ -68,7 +66,7 @@ Phishing merupakan teknik rekayasa sosial yang memanfaatkan manipulasi psikologi
 - Budaya blame culture yang menghambat pelaporan
 - Kurangnya investasi dalam pelatihan keamanan
 
-### 3.3 Strategi Penanggulangan
+### Strategi Penanggulangan
 
 1. **Teknologi**: Implementasi FIDO2/WebAuthn, Zero Trust Architecture
 2. **Manusia**: Pelatihan berbasis simulasi dan gamifikasi

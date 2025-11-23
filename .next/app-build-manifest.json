@@ -16,15 +16,25 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/(public)/search/page": [
+    "/(public)/abstrak/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(public)/search/page.js"
+      "static/chunks/app/(public)/abstrak/page.js"
+    ],
+    "/(public)/pendahuluan/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(public)/pendahuluan/page.js"
     ],
     "/(public)/topik/[slug]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(public)/topik/[slug]/page.js"
+    ],
+    "/(public)/landasan-teori/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(public)/landasan-teori/page.js"
     ]
   }
 }
